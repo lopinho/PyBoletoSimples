@@ -1,0 +1,12 @@
+# Files
+*.py[cd]
+.coverage
+MANIFEST
+
+# Virtualenvs
+env*
+.tox
+
+# Distribute
+build
+dist
