@@ -2,6 +2,16 @@
 import requests
 
 class BoletoSimplesBase:
+    def url(self):
+        raise NotImplementedError('Necessario implementar a funcao url retornando a url base com app na classe %s' % self.__class__.__name__)
+
+    def show(self, object_id, **kwargs):
+        if 'show' not in self.metodos_validos:
+            raise Exception('Nao e permitido mostrar atributos do objeto nessa classe')
+        resposta = self._get(self.url() + str(object_id), **kwargs)
+        if resposta.status_code == 200:
+            return resposta
+
     def list(self, **kwargs):
         if 'list' not in self.metodos_validos:
             raise Exception('Nao e permitido listar objetos nessa classe')
@@ -12,7 +22,7 @@ class BoletoSimplesBase:
     def delete(self, object_id, **kwargs):
         if 'delete' not in self.metodos_validos:
             raise Exception('Nao e permitido deletar objetos nessa classe')
-        resposta = self._delete(self.url(), **kwargs)
+        resposta = self._delete(self.url() + str(object_id), **kwargs)
         if resposta.status_code == 200:
             return resposta
 
@@ -89,5 +99,5 @@ class BoletoSimplesBase:
         self.token = kwargs['token']
         self.user_agent = kwargs['user_agent']
         self.password = kwargs.get('password', 'x')
-        self.metodos_validos= kwargs.get('metodos_validos',['create', 'delete', 'change', 'list'])
+        self.metodos_validos= kwargs.get('metodos_validos',['create', 'delete', 'change', 'list', 'show'])
 

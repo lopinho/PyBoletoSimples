@@ -104,3 +104,31 @@ class BoletoSimplesBaseTestCase(TestCase):
     def test_change_deve_levantar_erro_se_nao_estiver_nos_metodos_validos(self):
         self.object.metodos_validos.remove('change')
         self.assertRaisesRegexp(Exception,'Nao e permitido alterar objetos nessa classe', self.object.change,1, {})
+
+    def test_url_deve_levantar_erro_se_nao_estiver_implementado(self):
+        self.assertRaisesRegexp(NotImplementedError, 'Necessario implementar a funcao url retornando a url base com app na classe BoletoSimplesBase', self.object.url)
+
+    @patch('boletosimples.base.requests')
+    @patch('boletosimples.base.BoletoSimplesBase.url')
+    def test_url_deve_ter_comportamento_correto(self, url, requests):
+        self.object.list()
+        requests.get.assert_called_once_with(url.return_value, auth=('xpto', '123'), headers={'User-Agent': 'MyApp (myapp@example.com)'})
+
+    @patch('boletosimples.base.requests')
+    @patch('boletosimples.base.BoletoSimplesBase.url')
+    def test_delete_deve_ter_comportamento_correto(self, url, requests):
+        self.object.delete(1)
+        requests.delete.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), headers={'User-Agent': 'MyApp (myapp@example.com)'})
+
+    @patch('boletosimples.base.requests')
+    @patch('boletosimples.base.BoletoSimplesBase.url')
+    def test_change_deve_ter_comportamento_correto(self, url, requests):
+        self.object.change(1, {})
+        requests.patch.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), data={}, headers={'User-Agent': 'MyApp (myapp@example.com)'})
+
+    @patch('boletosimples.base.requests')
+    @patch('boletosimples.base.BoletoSimplesBase.url')
+    def test_create_deve_ter_comportamento_correto(self, url, requests):
+        self.object.create({})
+        requests.post.assert_called_once_with(url.return_value, auth=('xpto', '123'), data={}, headers={'User-Agent': 'MyApp (myapp@example.com)'})
+

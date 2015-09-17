@@ -5,12 +5,16 @@ class BankBillet(BoletoSimplesBase):
     """
         Manager para Boletos
     """
-
     def url(self):
         return self.base_site + 'bank_billets/'
 
-    def cancelar(self, boleto_id, **kwargs):
-        return self._put(self._boletos_url() + boleto_id + '/cancel', **kwargs)
+    def cancel(self, boleto_id, **kwargs):
+        return self._put(self.url() + boleto_id + '/cancel', **kwargs)
+
+    def __init__(self, **kwargs):
+        return super(BankBillet, self).__init__(
+            metodos_validos=['create', 'list', 'show'],
+            **kwargs)
 
 
 class BankBilletAccount(BoletoSimplesBase):
