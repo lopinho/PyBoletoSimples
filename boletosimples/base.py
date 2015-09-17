@@ -86,14 +86,16 @@ class BoletoSimplesBase:
     def _headers_do_kwargs(self, kwargs):
         if 'headers' in kwargs:
             kwargs['headers']['User-Agent'] = self.user_agent
+            kwargs['headers']['Content-Type'] = 'application/json'
             return kwargs.pop('headers')
-        return {'User-Agent' : self.user_agent}
+        return {'User-Agent' : self.user_agent, 'Content-Type':'application/json'}
 
     def _valida_inicializacao(self, kwargs):
         necessarios = ['token', 'user_agent']
         for atributo in necessarios:
             if atributo not in kwargs:
                 raise Exception('Atributo %s faltando para iniciar o servico' % atributo)
+
     def __init__(self, **kwargs):
         self._valida_inicializacao(kwargs)
         self.token = kwargs['token']
