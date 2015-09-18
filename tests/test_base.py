@@ -38,7 +38,8 @@ class BoletoSimplesBaseTestCase(TestCase):
         atributos = self.atributos_inicializacao
         del atributos['token']
         with patch.dict('os.environ'):
-            del os.environ['BOLETOSIMPLES_TOKEN']
+            if 'BOLETOSIMPLES_TOKEN' in os.environ:
+                del os.environ['BOLETOSIMPLES_TOKEN']
             self.assertRaisesRegexp(Exception, 'Atributo token faltando para iniciar o servico', BoletoSimplesBase, **atributos)
 
     def test_valida_inicializacao_user_agent(self):
@@ -48,7 +49,8 @@ class BoletoSimplesBaseTestCase(TestCase):
         atributos = self.atributos_inicializacao
         del atributos['user_agent']
         with patch.dict('os.environ'):
-            del os.environ['BOLETOSIMPLES_APP_ID']
+            if 'BOLETOSIMPLES_APP_ID' in os.environ:
+                del os.environ['BOLETOSIMPLES_APP_ID']
             self.assertRaisesRegexp(Exception, 'Atributo user_agent faltando para iniciar o servico', BoletoSimplesBase, **atributos)
 
     def test_headers_do_kwargs_vasio_deve_retornar_header_correto(self):

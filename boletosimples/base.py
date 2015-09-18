@@ -23,11 +23,11 @@ class BoletoSimplesBase(object):
                 return self.show(object_id, **kwargs)
         self._raise_error(resposta)
 
-
     def list(self, **kwargs):
         if 'list' not in self.metodos_validos:
             raise Exception('Nao e permitido listar objetos nessa classe')
         resposta = self._get(self.url(), **kwargs)
+
         if resposta.status_code == 204:
             return None
         if resposta.status_code == 200:
@@ -110,6 +110,7 @@ class BoletoSimplesBase(object):
             data=data,
             **kwargs
         )
+
     def _raise_error(self, resposta):
         content_type = resposta.headers.get('content-type') or resposta.headers.get('Content-Type')
         if 'JSON' not in content_type.upper():
@@ -142,13 +143,15 @@ class BoletoSimplesBase(object):
             kwargs['headers']['User-Agent'] = self.user_agent
             kwargs['headers']['Content-Type'] = 'application/json'
             return kwargs.pop('headers')
-        return {'User-Agent' : self.user_agent, 'Content-Type':'application/json'}
+
+        return {'User-Agent' : self.user_agent, 'Content-Type' : 'application/json'}
 
     def _valida_inicializacao(self, kwargs):
         necessarios = ['token', 'user_agent']
         for atributo in necessarios:
             if atributo not in kwargs:
                 raise Exception('Atributo %s faltando para iniciar o servico' % atributo)
+
     def _atualiza_kwargs_com_variaveis_ambiente(self, kwargs):
         user_agent = os.environ.get('BOLETOSIMPLES_APP_ID')
         token = os.environ.get('BOLETOSIMPLES_TOKEN')
@@ -169,8 +172,7 @@ class BoletoSimplesBase(object):
         self.token = kwargs['token']
         self.user_agent = kwargs['user_agent']
         self.password = kwargs.get('password', 'x')
-        self.metodos_validos= kwargs.get(
+        self.metodos_validos = kwargs.get(
             'metodos_validos',
             ['create', 'delete', 'change', 'list', 'show']
         )
-

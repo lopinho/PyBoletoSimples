@@ -1,5 +1,7 @@
 # coding: utf-8
 import json
+import datetime
+import decimal
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -14,8 +16,6 @@ class JSONEncoder(json.JSONEncoder):
         elif isinstance(o, datetime.date):
             return o.isoformat()
         elif isinstance(o, datetime.time):
-            if is_aware(o):
-                raise ValueError("JSON can't represent timezone-aware times.")
             r = o.isoformat()
             if o.microsecond:
                 r = r[:12]

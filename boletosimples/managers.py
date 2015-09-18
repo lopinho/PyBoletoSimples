@@ -1,6 +1,7 @@
 # coding: utf-8
 from base import BoletoSimplesBase
 
+
 class BankBilletAccount(BoletoSimplesBase):
     """
         Manager Para Carteiras de cobranca
@@ -32,10 +33,10 @@ class BankBillet(BoletoSimplesBase):
                 return super(BankBillet, self).create(attrs, **kwargs)
         except:
             pass
-        raise Exception('Nao foi possivel gerar o boleto, problemas com a  carteira' )
+        raise Exception('Nao foi possivel gerar o boleto, problemas com a  carteira')
 
     def cancel(self, boleto_id, **kwargs):
-        resposta = self._put(self.url() + str(boleto_id) + '/cancel',{}, **kwargs)
+        resposta = self._put(self.url() + str(boleto_id) + '/cancel', {}, **kwargs)
         if resposta.status_code == 204:
             return None
         if resposta.status_code == 200:
@@ -46,7 +47,6 @@ class BankBillet(BoletoSimplesBase):
         return super(BankBillet, self).__init__(
             metodos_validos=['create', 'list', 'show'],
             **kwargs)
-
 
 
 class UserInfo(BoletoSimplesBase):
@@ -62,6 +62,7 @@ class UserInfo(BoletoSimplesBase):
         if resposta.status_code == 200:
             return resposta.json()
 
+
 class Customers(BoletoSimplesBase):
     """
         Manager para os clientes
@@ -69,6 +70,7 @@ class Customers(BoletoSimplesBase):
 
     def url(self):
         return self.base_site + 'customers/'
+
 
 class Discharges(BoletoSimplesBase):
     """
@@ -80,11 +82,10 @@ class Discharges(BoletoSimplesBase):
     def pay_off(self, object_id):
         return self._put(self.url() + object_id + '/pay_off', None)
 
+
 class Remittances(BoletoSimplesBase):
     """
         Manager para o CNAB (Remessa)
     """
     def url(self):
         return self.base_site + 'remittances/'
-
-
