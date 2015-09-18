@@ -10,3 +10,4 @@ env*
 # Distribute
 build
 dist
+boletosimples.egg-info

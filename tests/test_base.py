@@ -117,24 +117,28 @@ class BoletoSimplesBaseTestCase(TestCase):
     @patch('boletosimples.base.requests')
     @patch('boletosimples.base.BoletoSimplesBase.url')
     def test_url_deve_ter_comportamento_correto(self, url, requests):
+        requests.get.return_value.status_code = 204
         self.object.list()
         requests.get.assert_called_once_with(url.return_value, auth=('xpto', '123'), headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
 
     @patch('boletosimples.base.requests')
     @patch('boletosimples.base.BoletoSimplesBase.url')
     def test_delete_deve_ter_comportamento_correto(self, url, requests):
+        requests.delete.return_value.status_code = 204
         self.object.delete(1)
         requests.delete.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
 
     @patch('boletosimples.base.requests')
     @patch('boletosimples.base.BoletoSimplesBase.url')
     def test_change_deve_ter_comportamento_correto(self, url, requests):
+        requests.patch.return_value.status_code = 204
         self.object.change(1, {})
-        requests.patch.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), data={}, headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
+        requests.patch.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), data='{}', headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
 
     @patch('boletosimples.base.requests')
     @patch('boletosimples.base.BoletoSimplesBase.url')
     def test_create_deve_ter_comportamento_correto(self, url, requests):
+        requests.post.return_value.status_code = 204
         self.object.create({})
-        requests.post.assert_called_once_with(url.return_value, auth=('xpto', '123'), data={}, headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
+        requests.post.assert_called_once_with(url.return_value, auth=('xpto', '123'), data='{}', headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
 
