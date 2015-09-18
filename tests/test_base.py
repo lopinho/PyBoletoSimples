@@ -3,6 +3,7 @@ import sys
 
 from unittest import TestCase
 from mock import patch
+import os
 
 sys.path.append('../')
 
@@ -36,7 +37,9 @@ class BoletoSimplesBaseTestCase(TestCase):
         """
         atributos = self.atributos_inicializacao
         del atributos['token']
-        self.assertRaisesRegexp(Exception, 'Atributo token faltando para iniciar o servico', BoletoSimplesBase, **atributos)
+        with patch.dict('os.environ'):
+            del os.environ['BOLETOSIMPLES_TOKEN']
+            self.assertRaisesRegexp(Exception, 'Atributo token faltando para iniciar o servico', BoletoSimplesBase, **atributos)
 
     def test_valida_inicializacao_user_agent(self):
         """
@@ -44,7 +47,9 @@ class BoletoSimplesBaseTestCase(TestCase):
         """
         atributos = self.atributos_inicializacao
         del atributos['user_agent']
-        self.assertRaisesRegexp(Exception, 'Atributo user_agent faltando para iniciar o servico', BoletoSimplesBase, **atributos)
+        with patch.dict('os.environ'):
+            del os.environ['BOLETOSIMPLES_APP_ID']
+            self.assertRaisesRegexp(Exception, 'Atributo user_agent faltando para iniciar o servico', BoletoSimplesBase, **atributos)
 
     def test_headers_do_kwargs_vasio_deve_retornar_header_correto(self):
         resposta = self.object._headers_do_kwargs({})
