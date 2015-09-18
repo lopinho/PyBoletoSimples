@@ -114,7 +114,7 @@ class BoletoSimplesBaseTestCase(TestCase):
         self.assertRaisesRegexp(Exception,'Nao e permitido alterar objetos nessa classe', self.object.change,1, {})
 
     def test_url_deve_levantar_erro_se_nao_estiver_implementado(self):
-        self.assertRaisesRegexp(NotImplementedError, 'Necessario implementar a funcao url retornando a url base com app na classe BoletoSimplesBase', self.object.url)
+        self.assertRaisesRegexp(NotImplementedError, 'Implementar funcao url retornando a url para o servico BoletoSimplesBase', self.object.url)
 
     @patch('boletosimples.base.requests')
     @patch('boletosimples.base.BoletoSimplesBase.url')

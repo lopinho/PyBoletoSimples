@@ -9,11 +9,14 @@ from utils import JSONEncoder
 
 class BoletoSimplesBase(object):
     def url(self):
-        raise NotImplementedError('Necessario implementar a funcao url retornando a url base com app na classe %s' % self.__class__.__name__)
+        raise NotImplementedError(
+            'Implementar funcao url retornando a url para o servico %s' %
+            self.__class__.__name__)
 
     def show(self, object_id, **kwargs):
         if 'show' not in self.metodos_validos:
-            raise Exception('Nao e permitido mostrar atributos do objeto nessa classe')
+            raise Exception(
+                'Nao e permitido mostrar atributos do objeto nessa classe')
         resposta = self._get(self.url() + str(object_id), **kwargs)
         if resposta.status_code == 200:
             return resposta.json()
@@ -108,11 +111,11 @@ class BoletoSimplesBase(object):
             auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
             data=data,
-            **kwargs
-        )
+            **kwargs)
 
     def _raise_error(self, resposta):
-        content_type = resposta.headers.get('content-type') or resposta.headers.get('Content-Type')
+        content_type = resposta.headers.get('content-type') or\
+            resposta.headers.get('Content-Type')
         if 'JSON' not in content_type.upper():
             if 'status' in resposta.header:
                 raise Exception(resposta.header['status'])
@@ -144,13 +147,18 @@ class BoletoSimplesBase(object):
             kwargs['headers']['Content-Type'] = 'application/json'
             return kwargs.pop('headers')
 
-        return {'User-Agent' : self.user_agent, 'Content-Type' : 'application/json'}
+        return {
+            'User-Agent': self.user_agent,
+            'Content-Type': 'application/json'
+        }
 
     def _valida_inicializacao(self, kwargs):
         necessarios = ['token', 'user_agent']
         for atributo in necessarios:
             if atributo not in kwargs:
-                raise Exception('Atributo %s faltando para iniciar o servico' % atributo)
+                erro = 'Atributo %s faltando para iniciar o servico' %\
+                    atributo
+                raise Exception(erro)
 
     def _atualiza_kwargs_com_variaveis_ambiente(self, kwargs):
         user_agent = os.environ.get('BOLETOSIMPLES_APP_ID')

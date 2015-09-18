@@ -12,6 +12,7 @@ with open('README.rst') as f:
         long_description=long_description,
         license='MIT',
         version='0.0.1',
+        url='https://github.com/lopinho/PyBoletoSimples',
         packages=['boletosimples'],
         classifiers=[
             'Development Status :: 3 - Alpha',

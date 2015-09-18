@@ -28,15 +28,20 @@ class BankBillet(BoletoSimplesBase):
                 password=self.password,
             )
             carteira_manager.base_site = self.base_site
-            carteira = carteira_manager.show(attrs['bank_billet']['bank_billet_account_id'])
+            carteira = carteira_manager.show(
+                attrs['bank_billet']['bank_billet_account_id'])
             if carteira:
                 return super(BankBillet, self).create(attrs, **kwargs)
         except:
             pass
-        raise Exception('Nao foi possivel gerar o boleto, problemas com a  carteira')
+        erro = 'Nao foi possivel gerar o boleto, problemas com a  carteira'
+        raise Exception(erro)
 
     def cancel(self, boleto_id, **kwargs):
-        resposta = self._put(self.url() + str(boleto_id) + '/cancel', {}, **kwargs)
+        resposta = self._put(
+            self.url() + str(boleto_id) + '/cancel',
+            {},
+            **kwargs)
         if resposta.status_code == 204:
             return None
         if resposta.status_code == 200:
