@@ -18,25 +18,6 @@ class BankBillet(BoletoSimplesBase):
     def url(self):
         return self.base_site + 'bank_billets/'
 
-    def create(self, attrs, **kwargs):
-        if 'bank_billet_account_id' not in attrs['bank_billet']:
-            raise Exception('Necessario uma carteira para gerar boleto')
-        try:
-            carteira_manager = BankBilletAccount(
-                token=self.token,
-                user_agent=self.user_agent,
-                password=self.password,
-            )
-            carteira_manager.base_site = self.base_site
-            carteira = carteira_manager.show(
-                attrs['bank_billet']['bank_billet_account_id'])
-            if carteira:
-                return super(BankBillet, self).create(attrs, **kwargs)
-        except:
-            pass
-        erro = 'Nao foi possivel gerar o boleto, problemas com a  carteira'
-        raise Exception(erro)
-
     def cancel(self, boleto_id, **kwargs):
         resposta = self._put(
             self.url() + str(boleto_id) + '/cancel',
