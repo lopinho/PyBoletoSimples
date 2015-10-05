@@ -2,13 +2,13 @@ from managers import (
     BankBilletAccount,
     BankBillet,
     UserInfo,
-    Customers,
-    Discharges,
-    Remittances)
+    Customer,
+    Discharge,
+    Remittance)
 
 Boleto = BankBillet
 ContaBancaria = BankBilletAccount
 Usuario = UserInfo
-Clientes = Customers
-Retorno = Discharges
-Remessas = Remittances
+Cliente = Customer
+Retorno = Discharge
+Remessa = Remittance

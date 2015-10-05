@@ -49,7 +49,7 @@ class UserInfo(BoletoSimplesBase):
             return resposta.json()
 
 
-class Customers(BoletoSimplesBase):
+class Customer(BoletoSimplesBase):
     """
         Manager para os clientes
     """
@@ -58,7 +58,7 @@ class Customers(BoletoSimplesBase):
         return self.base_site + 'customers/'
 
 
-class Discharges(BoletoSimplesBase):
+class Discharge(BoletoSimplesBase):
     """
         Manager para o CNAB (Retorno)
     """
@@ -69,7 +69,7 @@ class Discharges(BoletoSimplesBase):
         return self._put(self.url() + object_id + '/pay_off', None)
 
 
-class Remittances(BoletoSimplesBase):
+class Remittance(BoletoSimplesBase):
     """
         Manager para o CNAB (Remessa)
     """
