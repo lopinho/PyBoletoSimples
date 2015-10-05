@@ -4,7 +4,7 @@ import time
 import requests
 import json
 
-from utils import JSONEncoder
+from utils import JSONEncoder, cc_to_
 
 
 class BoletoSimplesBase(object):
@@ -48,6 +48,7 @@ class BoletoSimplesBase(object):
         self._raise_error(resposta)
 
     def change(self, object_id, attrs, **kwargs):
+        attrs = self._safe_dict(attrs)
         if 'change' not in self.metodos_validos:
             raise Exception('Nao e permitido alterar objetos nessa classe')
 
@@ -60,6 +61,7 @@ class BoletoSimplesBase(object):
         self._raise_error(resposta)
 
     def create(self, attrs, **kwargs):
+        attrs = self._safe_dict(attrs)
         if 'create' not in self.metodos_validos:
             raise Exception('Nao e permitido criar objetos nessa classe')
 
@@ -70,6 +72,11 @@ class BoletoSimplesBase(object):
         if resposta.status_code == 201:
             return resposta.json()
         self._raise_error(resposta)
+
+    def _safe_dict(self, dicionario):
+        key = cc_to_(self.__class__.__name__)
+        if key not in dicionario:
+            return {key:dicionario}
 
     def _get(self, url, **kwargs):
         return requests.get(
