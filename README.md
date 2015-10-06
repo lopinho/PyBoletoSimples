@@ -18,6 +18,7 @@ manager = boletosimples.BankBillet(token='....', user_agent='Pedro (pedro@exampl
 É possivel configurar por variáveis de ambiente
 
 BOLETOSIMPLES_APP_ID='Pedro (pedro@example.com)'
+
 BOLETOSIMPLES_TOKEN='....'
 
 Caso queira usar o ambiente de teste:
@@ -25,15 +26,22 @@ BOLETOSIMPLES_API_URL=https://sandbox.boletosimples.com.br/api/v1/
 
 ## Alias
 Boleto = BankBillet
+
 ContaBancaria = BankBilletAccount
+
 Usuario = UserInfo
+
 Cliente = Customer
+
 Retorno = Discharge
+
 Remessa = Remittance
 
 ## Exemplos
 ### Boletos Bancários
 ```python
+import boletosimples
+
 # Criando um boleto
 atributos = {
     amount: 9.01,
