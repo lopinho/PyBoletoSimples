@@ -151,7 +151,7 @@ class BoletoSimplesBase(object):
                         mensagem = (u", ".join(lista)).encode('utf-8')
             except:
                 mensagem = resposta.text
-            raise Exception(mensagem)
+            raise Exception(mensagem.encode('utf-8'))
         raise Exception(resposta.headers.get('status', resposta.status_code))
 
     def _headers_do_kwargs(self, kwargs):
