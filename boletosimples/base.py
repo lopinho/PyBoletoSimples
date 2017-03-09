@@ -37,6 +37,9 @@ class BoletoSimplesBase(object):
             return resposta.json()
         self._raise_error(resposta)
 
+    def find(self, dicionario):
+        return self.list(**dicionario)
+
     def delete(self, object_id, **kwargs):
         if 'delete' not in self.metodos_validos:
             raise Exception('Nao e permitido deletar objetos nessa classe')
@@ -46,6 +49,9 @@ class BoletoSimplesBase(object):
         if resposta.status_code == 200:
             return resposta.json()
         self._raise_error(resposta)
+
+    def update(self, object_id, attrs, **kwargs):
+        return self.change(object_id, attrs, **kwargs)
 
     def change(self, object_id, attrs, **kwargs):
         attrs = self._safe_dict(attrs)
@@ -76,7 +82,7 @@ class BoletoSimplesBase(object):
     def _safe_dict(self, dicionario):
         key = cc_to_(self.__class__.__name__)
         if key not in dicionario:
-            return {key:dicionario}
+            return {key: dicionario}
 
     def _get(self, url, **kwargs):
         return requests.get(
