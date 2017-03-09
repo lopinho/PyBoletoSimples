@@ -148,7 +148,7 @@ class BoletoSimplesBase(object):
                     for campo, erros in items:
                         erro = u'%s: %s' % (campo, u", ".join(erros))
                         lista.append(erro)
-                        mensagem = (u", ".join(lista)).encode('utf-8')
+                        mensagem = u", ".join(lista)
             except:
                 mensagem = resposta.text
             raise Exception(mensagem.encode('utf-8'))
