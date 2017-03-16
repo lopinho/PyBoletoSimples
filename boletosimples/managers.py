@@ -1,4 +1,7 @@
 # coding: utf-8
+import json
+
+from utils import JSONEncoder
 from base import BoletoSimplesBase
 
 
@@ -15,6 +18,16 @@ class BankBillet(BoletoSimplesBase):
     """
         Manager para Boletos
     """
+    def bulk(self, attrs, **kwargs):
+        attrs = json.dumps({'bank_billets': attrs}, cls=JSONEncoder)
+
+        resposta = self._post(self.url() + 'bulk/', attrs, **kwargs)
+        if resposta.status_code == 204:
+            return None
+        if resposta.status_code == 201:
+            return resposta.json()
+        self._raise_error(resposta)
+
     def url(self):
         return self.base_site + 'bank_billets/'
 
@@ -31,7 +44,7 @@ class BankBillet(BoletoSimplesBase):
 
     def __init__(self, **kwargs):
         return super(BankBillet, self).__init__(
-            metodos_validos=['create', 'list', 'show'],
+            metodos_validos=['create', 'list', 'show', 'bulk'],
             **kwargs)
 
 
