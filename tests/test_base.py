@@ -135,12 +135,12 @@ class BoletoSimplesBaseTestCase(TestCase):
     def test_change_deve_ter_comportamento_correto(self, url, requests):
         requests.patch.return_value.status_code = 204
         self.object.change(1, {})
-        requests.patch.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), data='{}', headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
+        requests.patch.assert_called_once_with(url.return_value + str(1), auth=('xpto', '123'), data='{"boleto_simples_base": {}}', headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
 
     @patch('boletosimples.base.requests')
     @patch('boletosimples.base.BoletoSimplesBase.url')
     def test_create_deve_ter_comportamento_correto(self, url, requests):
         requests.post.return_value.status_code = 204
         self.object.create({})
-        requests.post.assert_called_once_with(url.return_value, auth=('xpto', '123'), data='{}', headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
+        requests.post.assert_called_once_with(url.return_value, auth=('xpto', '123'), data='{"boleto_simples_base": {}}', headers={'Content-Type': 'application/json','User-Agent': 'MyApp (myapp@example.com)'})
 
