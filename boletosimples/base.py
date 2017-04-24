@@ -6,6 +6,7 @@ import json
 
 from utils import JSONEncoder, cc_to_
 
+CONNECT_TIMEOUT, READ_TIMEOUT = 5.0, 30.0
 
 class BoletoSimplesBase(object):
     def url(self):
@@ -85,44 +86,54 @@ class BoletoSimplesBase(object):
             return {key: dicionario}
 
     def _get(self, url, **kwargs):
+        timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.get(
             url,
             auth=(self.token, self.password),
-            headers = self._headers_do_kwargs(kwargs),
+            headers=self._headers_do_kwargs(kwargs),
+            timeout=timeout,
             **kwargs
         )
 
     def _delete(self, url, **kwargs):
+        timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.delete(
             url,
             auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
+            timeout=timeout,
             **kwargs
         )
 
     def _post(self, url, data, **kwargs):
+        timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.post(
             url,
             auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
+            timeout=timeout,
             data=data,
             **kwargs
         )
 
     def _put(self, url, data, **kwargs):
+        timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.put(
             url,
             auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
+            timeout=timeout,
             data=data,
             **kwargs
         )
 
     def _patch(self, url, data, **kwargs):
+        timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.patch(
             url,
             auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
+            timeout=timeout,
             data=data,
             **kwargs)
 
