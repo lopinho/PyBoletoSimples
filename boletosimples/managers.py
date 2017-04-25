@@ -18,23 +18,11 @@ class BankBillet(BoletoSimplesBase):
     """
         Manager para Boletos
     """
-    def _trata_resposta_bulk(self, resposta):
-        retorno = []
-        for item in resposta.json():
-            if 'bank_billet' in item:
-                item = item['bank_billet']
-            retorno.append(item)
-        return retorno
 
     def bulk(self, attrs, **kwargs):
         attrs = json.dumps({'bank_billets': attrs}, cls=JSONEncoder)
-
         resposta = self._post(self.url() + 'bulk/', attrs, **kwargs)
-        if resposta.status_code == 204:
-            return None
-        if resposta.status_code == 201:
-            return self._trata_resposta_bulk(resposta)
-        self._raise_error(resposta)
+        return resposta.json()
 
     def url(self):
         return self.base_site + 'bank_billets/'
