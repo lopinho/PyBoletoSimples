@@ -14,15 +14,7 @@ Toda classe deve ser inicializada com os atributos token, user_agent:
 import boletosimples
 manager = boletosimples.BankBillet(token='....', user_agent='Pedro (pedro@example.com)')
 
-### Variáveis de ambiente
-É possivel configurar por variáveis de ambiente
-
-BOLETOSIMPLES_APP_ID='Pedro (pedro@example.com)'
-
-BOLETOSIMPLES_TOKEN='....'
-
-Caso queira usar o ambiente de teste:
-BOLETOSIMPLES_API_URL=https://sandbox.boletosimples.com.br/api/v1/
+Caso queira usar o ambiente de teste inicialize o manager com is_production=False
 
 ## Alias
 Boleto = BankBillet

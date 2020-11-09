@@ -8,6 +8,7 @@ from utils import JSONEncoder, cc_to_
 
 CONNECT_TIMEOUT, READ_TIMEOUT = 5.0, 30.0
 
+
 class BoletoSimplesBase(object):
     def url(self):
         raise NotImplementedError(
@@ -27,6 +28,9 @@ class BoletoSimplesBase(object):
                 return self.show(object_id, **kwargs)
         self._raise_error(resposta)
 
+    def get(self, object_id, **kwargs):
+        return self.show(object_id, **kwargs)
+
     def list(self, **kwargs):
         if 'list' not in self.metodos_validos:
             raise Exception('Nao e permitido listar objetos nessa classe')
@@ -38,8 +42,8 @@ class BoletoSimplesBase(object):
             return resposta.json()
         self._raise_error(resposta)
 
-    def find(self, dicionario):
-        return self.list(**dicionario)
+    def find(self, **kwargs):
+        return self.list(**kwargs)
 
     def delete(self, object_id, **kwargs):
         if 'delete' not in self.metodos_validos:
@@ -89,7 +93,6 @@ class BoletoSimplesBase(object):
         timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.get(
             url,
-            auth=(self.token, self.password),
             headers=self._headers_do_kwargs(kwargs),
             timeout=timeout,
             **kwargs
@@ -99,7 +102,6 @@ class BoletoSimplesBase(object):
         timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.delete(
             url,
-            auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
             timeout=timeout,
             **kwargs
@@ -109,7 +111,6 @@ class BoletoSimplesBase(object):
         timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.post(
             url,
-            auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
             timeout=timeout,
             data=data,
@@ -120,7 +121,6 @@ class BoletoSimplesBase(object):
         timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.put(
             url,
-            auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
             timeout=timeout,
             data=data,
@@ -131,7 +131,6 @@ class BoletoSimplesBase(object):
         timeout = kwargs.get('timeout', (CONNECT_TIMEOUT, READ_TIMEOUT))
         return requests.patch(
             url,
-            auth=(self.token, self.password),
             headers = self._headers_do_kwargs(kwargs),
             timeout=timeout,
             data=data,
@@ -166,15 +165,11 @@ class BoletoSimplesBase(object):
         raise Exception(resposta.headers.get('status', resposta.status_code))
 
     def _headers_do_kwargs(self, kwargs):
-        if 'headers' in kwargs:
-            kwargs['headers']['User-Agent'] = self.user_agent
-            kwargs['headers']['Content-Type'] = 'application/json'
-            return kwargs.pop('headers')
-
-        return {
-            'User-Agent': self.user_agent,
-            'Content-Type': 'application/json'
-        }
+        headers = kwargs.get('headers', {})
+        headers['User-Agent'] = self.user_agent
+        headers['Content-Type'] = 'application/json'
+        headers['Authorization'] = 'Bearer {}'.format(self.token)
+        return headers
 
     def _valida_inicializacao(self, kwargs):
         necessarios = ['token', 'user_agent']
@@ -194,16 +189,17 @@ class BoletoSimplesBase(object):
         if token and 'token' not in kwargs:
             kwargs['token'] = token
 
-    def __init__(self, **kwargs):
+    def __init__(self, is_production=True, **kwargs):
         self._atualiza_kwargs_com_variaveis_ambiente(kwargs)
         self._valida_inicializacao(kwargs)
-        self.base_site = os.environ.get(
-            'BOLETOSIMPLES_API_URL',
-            'https://boletosimples.com.br/api/v1/'
-        )
+
+        if is_production:
+            self.base_site = 'https://boletosimples.com.br/api/v1/'
+        else:
+            self.base_site = 'https://sandbox.boletosimples.com.br/api/v1/'
+
         self.token = kwargs['token']
         self.user_agent = kwargs['user_agent']
-        self.password = kwargs.get('password', 'x')
         self.metodos_validos = kwargs.get(
             'metodos_validos',
             ['create', 'delete', 'change', 'list', 'show']
