@@ -8,7 +8,7 @@ setup(
     author_email='lopinho@gmail.com',
     description='Library to use BoletoSimpes.com.br',
     license='MIT',
-    version='1.0.2',
+    version='1.0.3',
     url='https://github.com/lopinho/PyBoletoSimples',
     packages=['boletosimples'],
     classifiers=[
