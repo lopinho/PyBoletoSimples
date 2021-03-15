@@ -11,3 +11,5 @@ env*
 build
 dist
 boletosimples.egg-info
+
+.idea/
