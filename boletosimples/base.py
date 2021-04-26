@@ -4,7 +4,7 @@ import time
 import requests
 import json
 
-from utils import JSONEncoder, cc_to_
+from .utils import JSONEncoder, cc_to_
 
 CONNECT_TIMEOUT, READ_TIMEOUT = 5.0, 30.0
 

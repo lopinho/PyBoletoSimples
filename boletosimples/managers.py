@@ -1,8 +1,8 @@
 # coding: utf-8
 import json
 
-from utils import JSONEncoder
-from base import BoletoSimplesBase
+from .utils import JSONEncoder
+from .base import BoletoSimplesBase
 
 
 class BankBilletAccount(BoletoSimplesBase):
